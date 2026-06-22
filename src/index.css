@@ -84,11 +84,11 @@ h1,
 h2 {
   font-family: var(--heading);
   font-weight: 500;
-  color: var(--text-h);
+  color: black
 }
 
 h1 {
-  font-size: 56px;
+  font-size: 26px;
   letter-spacing: -1.68px;
   margin: 32px 0;
   @media (max-width: 1024px) {
@@ -122,4 +122,16 @@ code {
   line-height: 135%;
   padding: 4px 8px;
   background: var(--code-bg);
+}
+td , th{
+  padding: 16px;
+}
+thead{
+  background-color: #dcdcdc;
+}
+tr {
+  border-bottom: 1px solid rgb(72, 72, 72);
+}
+table{
+  width: 100%;
 }
