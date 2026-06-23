@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router";
 import Layout from "./components/layout/Layout";
-import Customers from "./components/pages/Customers"
+import Customers from "./components/pages/Customers/Customers";
 import Products from "./components/pages/Products";
 
 export default function App() {

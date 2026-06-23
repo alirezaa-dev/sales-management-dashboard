@@ -1,7 +1,9 @@
 import { useState } from "react";
-import Button from "../ui/Button";
+import Button from "../../ui/Button";
 import { MdOutlineModeEdit, MdDeleteOutline } from "react-icons/md";
-import DeleteButton from "../ui/DeleteButton";
+import DeleteButton from "../../ui/DeleteButton";
+import AddModal from "./components/Addmodal";
+import EditModal from "./components/EditModal";
 
 export default function Customers() {
   const [isModalOpenDelete, setIsModalOpenDelete] = useState(false);
@@ -41,14 +43,14 @@ export default function Customers() {
     setPhone("");
   }
 
-  //  DELETE 
+  //  DELETE
   function deleteCustomer() {
     setCustomers((prev) => prev.filter((c) => c.id !== selectedCustomerId));
     setSelectedCustomerId(null);
     setIsModalOpenDelete(false);
   }
 
-  //  ADD 
+  //  ADD
   function addCustomer() {
     if (!name.trim() || !phone.trim()) {
       alert("نام و موبایل را وارد کنید");
@@ -75,7 +77,7 @@ export default function Customers() {
     setIsModalOpenAdd(false);
   }
 
-  //  EDIT 
+  //  EDIT
   function openEditModal(customer) {
     setSelectedCustomerId(customer.id);
     setName(customer.name);
@@ -143,7 +145,12 @@ export default function Customers() {
                 <td className="px-4 py-3 border-b">
                   <button
                     className="p-2 mx-1 rounded-md bg-blue-100 cursor-pointer"
-                    onClick={() => openEditModal(customer)}
+                    onClick={() => {
+                      setSelectedCustomerId(customer.id);
+                      setName(customer.name);
+                      setPhone(customer.phone);
+                      setIsModalOpenEdit(true);
+                    }}
                   >
                     <MdOutlineModeEdit className="text-blue-600" />
                   </button>
@@ -165,80 +172,27 @@ export default function Customers() {
       </div>
 
       {/*  ADD MODAL  */}
-      {isModalOpenAdd && (
-        <div
-          className="fixed inset-0 bg-black/40 flex items-center justify-center"
-          onClick={() => setIsModalOpenAdd(false)}
-        >
-          <div
-            className="bg-white p-4 rounded-md w-96"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h3 className="mb-3">افزودن مشتری</h3>
-
-            <input
-              className="border p-2 w-full mb-2"
-              placeholder="نام"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-
-            <input
-              className="border p-2 w-full mb-2"
-              placeholder="موبایل"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-            />
-
-            <Button onClick={addCustomer}>ثبت</Button>
-
-            <button
-              className="mr-2 px-3 py-2 cursor-pointer"
-              onClick={() => setIsModalOpenAdd(false)}
-            >
-              بستن
-            </button>
-          </div>
-        </div>
-      )}
-
+      {
+        <AddModal
+          isOpen={isModalOpenAdd}
+          onClose={() => setIsModalOpenAdd(false)}
+          name={name}
+          setName={setName}
+          phone={phone}
+          setPhone={setPhone}
+          onAdd={addCustomer}
+        />
+      }
       {/*  EDIT MODAL  */}
-      {isModalOpenEdit && (
-        <div
-          className="fixed inset-0 bg-black/40 flex items-center justify-center"
-          onClick={() => setIsModalOpenEdit(false)}
-        >
-          <div
-            className="bg-white p-4 rounded-md w-96"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h3 className="mb-3">ویرایش مشتری</h3>
-
-            <input
-              className="border p-2 w-full mb-2"
-              placeholder="نام"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-
-            <input
-              className="border p-2 w-full mb-2"
-              placeholder="موبایل"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-            />
-
-            <Button onClick={updateCustomer}>ویرایش</Button>
-
-            <button
-              className="mr-2 px-3 py-2 cursor-pointer"
-              onClick={() => setIsModalOpenEdit(false)}
-            >
-              بستن
-            </button>
-          </div>
-        </div>
-      )}
+      <EditModal
+        isOpen={isModalOpenEdit}
+        onClose={() => setIsModalOpenEdit(false)}
+        name={name}
+        setName={setName}
+        phone={phone}
+        setPhone={setPhone}
+        onEdit={updateCustomer}
+      />
 
       {/*  DELETE MODAL  */}
       {isModalOpenDelete && (
