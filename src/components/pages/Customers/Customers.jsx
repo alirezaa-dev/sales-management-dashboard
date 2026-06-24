@@ -10,6 +10,9 @@ export default function Customers() {
   const [isModalOpenEdit, setIsModalOpenEdit] = useState(false);
   const [isModalOpenAdd, setIsModalOpenAdd] = useState(false);
 
+  const [search, setSearch] = useState("");
+  const [sortBy, setSortBy] = useState("default");
+
   const [nextId, setNextId] = useState(3);
 
   const [name, setName] = useState("");
@@ -23,16 +26,39 @@ export default function Customers() {
       name: "علیرضا دهقان بنادکی",
       phone: "09365534123",
       score: 120,
-      joinDate: "1405/03/20",
+      joinDate: "۱۴۰۵/۰۳/۲۰",
     },
     {
       id: 2,
       name: "مریم احمدی",
       phone: "09123456789",
       score: 80,
-      joinDate: "1405/03/15",
+      joinDate: "۱۴۰۵/۰۳/۱۵",
     },
   ]);
+  const filteredCustomers = [...customers]
+    .filter(
+      (customer) =>
+        customer.name.toLowerCase().includes(search.toLowerCase()) ||
+        customer.phone.includes(search),
+    )
+    .sort((a, b) => {
+      if (sortBy === "highestScore") {
+        return b.score - a.score;
+      }
+      if (sortBy === "lowestScore") {
+        return a.score - b.score;
+      }
+
+      if (sortBy === "newestJoinDate") {
+        return new Date(b.joinDate) - new Date(a.joinDate);
+      }
+      if(sortBy === "oldestJoinDate"){
+        return new Date(a.joinDate) - new Date(b.joinDate);
+      }
+
+      return 0;
+    });
 
   function isValidPhone(phone) {
     return /^09\d{9}$/.test(phone);
@@ -119,30 +145,62 @@ export default function Customers() {
         </Button>
       </div>
 
+      {/* Search & Filters */}
+      <div className="flex flex-row gap-4">
+        <input
+          className="h-12 leading-12 px-3 border border-gray-200 rounded bg-white w-full"
+          type="text"
+          placeholder="جستجوی نام یا شماره موبایل"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <select
+          className="h-12 px-3 border border-gray-200 rounded bg-white"
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value)}
+        >
+          <option value="default">مرتب‌سازی</option>
+          <option value="highestScore">بیشترین امتیاز</option>
+          <option value="lowestScore">کمترین امتیاز</option>
+          <option value="newestJoinDate">جدیدترین عضویت</option>
+          <option value="oldestJoinDate">قدیمی‌ترین عضویت</option>
+        </select>
+      </div>
+
       {/* TABLE */}
       <div className="bg-white rounded-md">
-        <table className="w-full text-right">
+        <table className="w-full text-right rounded-lg">
           <thead className="bg-gray-200">
             <tr>
-              <th className="px-4 py-4 border-b">شماره</th>
-              <th className="px-4 py-4 border-b">نام</th>
-              <th className="px-4 py-4 border-b">موبایل</th>
-              <th className="px-4 py-4 border-b">امتیاز</th>
-              <th className="px-4 py-4 border-b">تاریخ</th>
-              <th className="px-4 py-4 border-b">عملیات</th>
+              <th className="px-4 py-4 border-b border-gray-100">شماره</th>
+              <th className="px-4 py-4 border-b border-gray-100">نام</th>
+              <th className="px-4 py-4 border-b border-gray-100">موبایل</th>
+              <th className="px-4 py-4 border-b border-gray-100">امتیاز</th>
+              <th className="px-4 py-4 border-b border-gray-100">تاریخ</th>
+              <th className="px-4 py-4 border-b border-gray-100">عملیات</th>
             </tr>
           </thead>
 
           <tbody>
-            {customers.map((customer) => (
+            {filteredCustomers.map((customer) => (
               <tr key={customer.id}>
-                <td className="px-4 py-3 border-b">{customer.id}</td>
-                <td className="px-4 py-3 border-b">{customer.name}</td>
-                <td className="px-4 py-3 border-b">{customer.phone}</td>
-                <td className="px-4 py-3 border-b">{customer.score}</td>
-                <td className="px-4 py-3 border-b">{customer.joinDate}</td>
+                <td className="px-4 py-3 border-b border-gray-100">
+                  {customer.id}
+                </td>
+                <td className="px-4 py-3 border-b border-gray-100">
+                  {customer.name}
+                </td>
+                <td className="px-4 py-3 border-b border-gray-100">
+                  {customer.phone}
+                </td>
+                <td className="px-4 py-3 border-b border-gray-100">
+                  {customer.score}
+                </td>
+                <td className="px-4 py-3 border-b border-gray-100">
+                  {customer.joinDate}
+                </td>
 
-                <td className="px-4 py-3 border-b">
+                <td className="px-4 py-3 border-b border-gray-100">
                   <button
                     className="p-2 mx-1 rounded-md bg-blue-100 cursor-pointer"
                     onClick={() => {
