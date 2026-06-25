@@ -4,9 +4,12 @@ import { MdOutlineModeEdit, MdDeleteOutline } from "react-icons/md";
 
 export default function Categories() {
   const [isOpenModalAddCategory, setIsOpenModalAddCategory] = useState(false);
+  const [isOpenModalEditCategory, setIsOpenModalEditCategory] = useState(false);
+
   const [title, setTitle] = useState("");
   const [parentId, setParentId] = useState(0);
   const [nextId, setNextId] = useState(6);
+  const [selectedCategoryId, setSelectedCategoryId] = useState(null);
   const getParentCategory = (parentId) => {
     return categories.find((cat) => cat.id === parentId);
   };
@@ -60,6 +63,22 @@ export default function Categories() {
     resetForm();
     setIsOpenModalAddCategory(false);
   }
+  function updateCategory() {
+    if (!title.trim()) {
+      alert("لطفا نام دسته بندی را وارد کنید");
+      return;
+    }
+    setCategories((prev) =>
+      prev.map((c) =>
+        c.id === selectedCategoryId
+          ? { ...c, title, parentId: parentId === 0 ? null : parentId }
+          : c,
+      ),
+    );
+    resetForm();
+    setSelectedCategoryId(null);
+    setIsOpenModalEditCategory(false);
+  }
 
   return (
     <>
@@ -108,7 +127,15 @@ export default function Categories() {
                 <td className="px-4 py-3 border-b border-gray-100">1</td>
 
                 <td className="px-4 py-3 border-b border-gray-100">
-                  <button className="p-2 mx-1 rounded-md bg-blue-100 cursor-pointer">
+                  <button
+                    className="p-2 mx-1 rounded-md bg-blue-100 cursor-pointer"
+                    onClick={() => {
+                      setSelectedCategoryId(category.Id);
+                      setTitle(category.title);
+                      setParentId(category.parentId ?? 0);
+                      setIsOpenModalEditCategory(true);
+                    }}
+                  >
                     <MdOutlineModeEdit className="text-blue-600" />
                   </button>
 
@@ -164,6 +191,54 @@ export default function Categories() {
             <button
               className="mr-2 px-3 py-2 cursor-pointer"
               onClick={() => setIsOpenModalAddCategory(false)}
+            >
+              بستن
+            </button>
+          </div>
+        </div>
+      )}
+      {/* Add Category Modal */}
+      {isOpenModalEditCategory && (
+        <div
+          className="fixed inset-0 bg-black/40 flex items-center justify-center"
+          onClick={() => setIsOpenModalEditCategory(false)}
+        >
+          <div
+            className="bg-white p-4 rounded-md w-96"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 className="mb-3">ویرایش دسته‌بندی</h3>
+            <label className="block mb-1">نام دسته‌بندی</label>
+            <input
+              className="border p-2 w-full mb-2"
+              placeholder="نام دسته‌بندی"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+
+            <label className="block mb-1">دسته‌بندی اصلی</label>
+
+            <select
+              className="border p-2 w-full mb-3"
+              value={parentId}
+              onChange={(e) => setParentId(Number(e.target.value))}
+            >
+              <option value={0}>هیچکدام</option>
+
+              {categories
+                .filter((cat) => cat.parentId === null)
+                .map((cat) => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.title}
+                  </option>
+                ))}
+            </select>
+
+            <Button onClick={updateCategory}>ویرایش</Button>
+
+            <button
+              className="mr-2 px-3 py-2 cursor-pointer"
+              onClick={() => setIsOpenModalEditCategory(false)}
             >
               بستن
             </button>
