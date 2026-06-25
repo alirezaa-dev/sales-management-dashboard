@@ -7,7 +7,7 @@ export default function Products() {
   const products = [
     {
       id: 1,
-      name: "شامپو بدن ضد جوش",
+      name: "شامپو بدن مخصوص پوست چرب",
       sku: "P001",
       price: 189000,
       stock: 25,

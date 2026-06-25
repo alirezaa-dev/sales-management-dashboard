@@ -13,7 +13,10 @@ export default function Sidebar() {
           <Link to="/customers">مشتریان</Link>
         </li>
         <li className="p-2 rounded hover:bg-gray-100 cursor-pointer text-right">
-         <Link to="/products">محصولات</Link>
+          <Link to="/products">محصولات</Link>
+        </li>
+        <li className="p-2 rounded hover:bg-gray-100 cursor-pointer text-right">
+          <Link to="/categories">دسته‌بندی‌ها</Link>
         </li>
         <li className="p-2 rounded hover:bg-gray-100 cursor-pointer text-right">
           سفارشات
