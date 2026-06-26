@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Button from "../../ui/Button";
 import { MdOutlineModeEdit, MdDeleteOutline } from "react-icons/md";
 import DeleteButton from "../../ui/DeleteButton";
+import ActiveStatus from "../../ui/ActiveStatus";
 
 export default function Categories() {
   const [isOpenModalAddCategory, setIsOpenModalAddCategory] = useState(false);
@@ -10,6 +11,7 @@ export default function Categories() {
     useState(false);
 
   const [title, setTitle] = useState("");
+  const [isActive, setIsActive] = useState(true);
   const [parentId, setParentId] = useState(0);
   const [nextId, setNextId] = useState(6);
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
@@ -28,6 +30,7 @@ export default function Categories() {
       id: 2,
       title: "مراقبت از پوست",
       parentId: null,
+      isActive: true,
     },
     {
       id: 3,
@@ -39,7 +42,7 @@ export default function Categories() {
       id: 4,
       title: "کرم مرطوب کننده",
       parentId: 2,
-      isActive: false
+      isActive: false,
     },
     {
       id: 5,
@@ -52,6 +55,7 @@ export default function Categories() {
   function resetForm() {
     setTitle("");
     setParentId(0);
+    setIsActive(true);
   }
   function addCategory() {
     if (!title.trim()) {
@@ -63,6 +67,7 @@ export default function Categories() {
       id: nextId,
       title,
       parentId: parentId === 0 ? null : parentId,
+      isActive: true,
     };
 
     setCategories((prev) => [...prev, newCategory]);
@@ -78,7 +83,12 @@ export default function Categories() {
     setCategories((prev) =>
       prev.map((c) =>
         c.id === selectedCategoryId
-          ? { ...c, title, parentId: parentId === 0 ? null : parentId }
+          ? {
+              ...c,
+              title,
+              parentId: parentId === 0 ? null : parentId,
+              isActive,
+            }
           : c,
       ),
     );
@@ -86,7 +96,7 @@ export default function Categories() {
     setSelectedCategoryId(null);
     setIsOpenModalEditCategory(false);
   }
-  function deleteCategory(){
+  function deleteCategory() {
     setCategories((prev) => prev.filter((c) => c.id !== selectedCategoryId));
     setSelectedCategoryId(null);
     setIsOpenModalDeleteCategory(false);
@@ -119,7 +129,7 @@ export default function Categories() {
               <th className="px-4 py-4 border-b border-gray-100">
                 تعداد محصولات
               </th>
-
+              <th className="px-4 py-4 border-b border-gray-100">وضعیت</th>
               <th className="px-4 py-4 border-b border-gray-100">عملیات</th>
             </tr>
           </thead>
@@ -137,15 +147,19 @@ export default function Categories() {
                   {getParentCategory(category.parentId)?.title || "-"}
                 </td>
                 <td className="px-4 py-3 border-b border-gray-100">1</td>
+                <td className="px-4 py-3 border-b border-gray-100">
+                  {<ActiveStatus status={category.isActive} />}
+                </td>
 
                 <td className="px-4 py-3 border-b border-gray-100">
                   <button
                     className="p-2 mx-1 rounded-md bg-blue-100 cursor-pointer"
                     onClick={() => {
-                      setSelectedCategoryId(category.Id);
+                      setSelectedCategoryId(category.id);
                       setTitle(category.title);
                       setParentId(category.parentId ?? 0);
                       setIsOpenModalEditCategory(true);
+                      setIsActive(category.isActive);
                     }}
                   >
                     <MdOutlineModeEdit className="text-blue-600" />
@@ -228,7 +242,7 @@ export default function Categories() {
             <h3 className="mb-3">ویرایش دسته‌بندی</h3>
             <label className="block mb-1">نام دسته‌بندی</label>
             <input
-              className="border p-2 w-full mb-2"
+              className="border p-2 w-full mb-6"
               placeholder="نام دسته‌بندی"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -237,7 +251,7 @@ export default function Categories() {
             <label className="block mb-1">دسته‌بندی اصلی</label>
 
             <select
-              className="border p-2 w-full mb-3"
+              className="border p-2 w-full mb-6"
               value={parentId}
               onChange={(e) => setParentId(Number(e.target.value))}
             >
@@ -250,6 +264,15 @@ export default function Categories() {
                     {cat.title}
                   </option>
                 ))}
+            </select>
+            <label className="block mb-1">وضعیت</label>
+            <select
+              className="border p-2 w-full mb-6"
+              value={isActive ? "true" : "false"}
+              onChange={(e) => setIsActive(e.target.value === "true")}
+            >
+              <option value="true">فعال</option>
+              <option value="false">غیرفعال</option>
             </select>
 
             <Button onClick={updateCategory}>ویرایش</Button>
