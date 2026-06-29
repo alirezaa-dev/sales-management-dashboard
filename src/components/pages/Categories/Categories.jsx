@@ -118,7 +118,7 @@ export default function Categories() {
                 </td>
                 <td className="px-4 py-3 border-b border-gray-100">1</td>
                 <td className="px-4 py-3 border-b border-gray-100">
-                  {<ActiveStatus status={category.isActive} />}
+                 <ActiveStatus status={category.isActive} />
                 </td>
 
                 <td className="px-4 py-3 border-b border-gray-100">

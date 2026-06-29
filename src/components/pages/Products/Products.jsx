@@ -5,38 +5,12 @@ import { MdOutlineModeEdit } from "react-icons/md";
 import { MdDeleteOutline } from "react-icons/md";
 import { useContext } from "react";
 import { CategoryContext } from "../../../context/CategoryContext";
+import { ProductContext } from "../../../context/ProductContext";
+import ActiveStatus from "../../ui/ActiveStatus";
 
 export default function Products() {
   const { categories } = useContext(CategoryContext);
-  const products = [
-    {
-      id: 1,
-      name: "شامپو بدن مخصوص پوست چرب",
-      sku: "P001",
-      price: 189000,
-      stock: 25,
-      status: "فعال",
-      categoryId: 5,
-    },
-    {
-      id: 2,
-      name: "کرم آبرسان",
-      sku: "P002",
-      price: 250000,
-      stock: 12,
-      status: "فعال",
-      categoryId: 4,
-    },
-    {
-      id: 3,
-      name: "ژل شستشوی صورت",
-      sku: "P003",
-      price: 145000,
-      stock: 0,
-      status: "ناموجود",
-      categoryId: 3,
-    },
-  ];
+  const { products } = useContext(ProductContext);
 
   return (
     <>
@@ -90,7 +64,7 @@ export default function Products() {
                   {product.stock}
                 </td>
                 <td className="px-4 py-4 border-b border-border text-sm">
-                  {product.status}
+                  <ActiveStatus status={product.isActive} />
                 </td>
 
                 <td className="px-4 py-4 border-b border-border text-sm">
