@@ -3,6 +3,8 @@ import Button from "../../ui/Button";
 import { MdOutlineModeEdit, MdDeleteOutline } from "react-icons/md";
 import DeleteButton from "../../ui/DeleteButton";
 import ActiveStatus from "../../ui/ActiveStatus";
+import { useContext } from "react";
+import { CategoryContext } from "../../../context/CategoryContext";
 
 export default function Categories() {
   const [isOpenModalAddCategory, setIsOpenModalAddCategory] = useState(false);
@@ -18,39 +20,7 @@ export default function Categories() {
   const getParentCategory = (parentId) => {
     return categories.find((cat) => cat.id === parentId);
   };
-
-  const [categories, setCategories] = useState([
-    {
-      id: 1,
-      title: "بهداشت شخصی و حمام",
-      parentId: null,
-      isActive: true,
-    },
-    {
-      id: 2,
-      title: "مراقبت از پوست",
-      parentId: null,
-      isActive: true,
-    },
-    {
-      id: 3,
-      title: "شوینده صورت",
-      parentId: 2,
-      isActive: true,
-    },
-    {
-      id: 4,
-      title: "کرم مرطوب کننده",
-      parentId: 2,
-      isActive: false,
-    },
-    {
-      id: 5,
-      title: "شامپو بدن",
-      parentId: 1,
-      isActive: true,
-    },
-  ]);
+  const { categories, setCategories } = useContext(CategoryContext);
 
   function resetForm() {
     setTitle("");
