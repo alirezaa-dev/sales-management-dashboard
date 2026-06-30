@@ -6,9 +6,6 @@ import ActiveStatus from "../../ui/ActiveStatus";
 import { BrandContext } from "../../../context/BrandContext";
 import { ProductContext } from "../../../context/ProductContext";
 
-import AddModal from "./components/AddModal";
-import EditModal from "./components/EditModal";
-
 export default function Brands() {
   const { brands, setBrands } = useContext(BrandContext);
   const { products } = useContext(ProductContext);
@@ -19,6 +16,8 @@ export default function Brands() {
 
   const [title, setTitle] = useState("");
   const [isActive, setIsActive] = useState(true);
+  const [enTitle, setEnTitle] = useState("");
+  const [search, setSearch] = useState("");
 
   const [selectedBrandId, setSelectedBrandId] = useState(null);
 
@@ -27,8 +26,13 @@ export default function Brands() {
   const countProducts = (brandId) =>
     products.filter((product) => product.brandId === brandId).length;
 
+  const filteredBrands = brands.filter((brand) =>
+    brand.title.toLowerCase().includes(search.toLowerCase()),
+  );
+
   function resetForm() {
     setTitle("");
+    setEnTitle("");
     setIsActive(true);
   }
 
@@ -41,6 +45,7 @@ export default function Brands() {
     const newBrand = {
       id: nextId,
       title,
+      enTitle,
       isActive: true,
     };
 
@@ -91,91 +96,164 @@ export default function Brands() {
           افزودن برند جدید
         </Button>
       </div>
+      {/* Search */}
+      <div className="flex flex-row gap-4">
+        <input
+          className="h-12 leading-12 px-3 border border-gray-200 rounded bg-white w-full"
+          type="text"
+          placeholder="جستجوی برند"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </div>
 
-      <div className="bg-white rounded-md">
-        <table className="w-full text-right rounded-lg">
+      <div className="w-full overflow-x-auto rounded-md bg-white">
+        <table className="w-full text-right border-collapse">
           <thead className="bg-gray-200">
             <tr>
-              <th className="px-4 py-4 border-b">شماره</th>
-              <th className="px-4 py-4 border-b">نام برند</th>
-              <th className="px-4 py-4 border-b">تعداد محصولات</th>
-              <th className="px-4 py-4 border-b">وضعیت</th>
-              <th className="px-4 py-4 border-b">عملیات</th>
+              <th className="px-4 py-4 border-b border-gray-100 text-sm whitespace-nowrap">
+                شماره
+              </th>
+              <th className="px-4 py-4 border-b border-gray-100 text-sm whitespace-nowrap">
+                نام برند
+              </th>
+              <th className="px-4 py-4 border-b border-gray-100 text-sm whitespace-nowrap">
+                تعداد محصولات
+              </th>
+
+              <th className="px-4 py-4 border-b border-gray-100 text-sm whitespace-nowrap">
+                عملیات
+              </th>
             </tr>
           </thead>
 
           <tbody>
             {brands.map((brand) => (
               <tr key={brand.id}>
-                <td className="px-4 py-3 border-b">{brand.id}</td>
+                <td className="px-4 py-3 border-b border-gray-100 text-sm whitespace-nowrap">
+                  {brand.id}
+                </td>
 
-                <td className="px-4 py-3 border-b">{brand.title}</td>
+                <td className="px-4 py-3 border-b border-gray-100 text-sm whitespace-nowrap">
+                  {brand.title}
+                </td>
 
-                <td className="px-4 py-3 border-b">
+                <td className="px-4 py-3 border-b border-gray-100 text-sm whitespace-nowrap">
                   {countProducts(brand.id)}
                 </td>
 
-                <td className="px-4 py-3 border-b">
-                  <ActiveStatus status={brand.isActive} />
-                </td>
+                <td className="px-4 py-3 border-b border-gray-100 text-sm whitespace-nowrap">
+                  <div className="flex items-center gap-2">
+                    <button
+                      className="p-2 rounded-md bg-blue-100 cursor-pointer"
+                      onClick={() => {
+                        setSelectedBrandId(brand.id);
+                        setTitle(brand.title);
+                        setIsActive(brand.isActive);
+                        setEnTitle(brand.enTitle);
+                        setIsModalOpenEdit(true);
+                      }}
+                    >
+                      <MdOutlineModeEdit className="text-blue-600" />
+                    </button>
 
-                <td className="px-4 py-3 border-b">
-                  <button
-                    className="p-2 mx-1 rounded-md bg-blue-100 cursor-pointer"
-                    onClick={() => {
-                      setSelectedBrandId(brand.id);
-                      setTitle(brand.title);
-                      setIsActive(brand.isActive);
-                      setIsModalOpenEdit(true);
-                    }}
-                  >
-                    <MdOutlineModeEdit className="text-blue-600" />
-                  </button>
-
-                  <button
-                    className="p-2 mx-1 rounded-md bg-red-100 cursor-pointer"
-                    onClick={() => {
-                      setSelectedBrandId(brand.id);
-                      setIsModalOpenDelete(true);
-                    }}
-                  >
-                    <MdDeleteOutline className="text-red-500" />
-                  </button>
+                    <button
+                      className="p-2 rounded-md bg-red-100 cursor-pointer"
+                      onClick={() => {
+                        setSelectedBrandId(brand.id);
+                        setIsModalOpenDelete(true);
+                      }}
+                    >
+                      <MdDeleteOutline className="text-red-500" />
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+      {/* Add Brand Modal */}
+      {isModalOpenAdd && (
+        <div
+          className="fixed inset-0 bg-black/40 flex items-center justify-center"
+          onClick={() => setIsModalOpenAdd(false)}
+        >
+          <div
+            className="bg-white p-4 rounded-md w-96"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 className="mb-3">افزودن برند</h3>
+            <label className="block mb-1">نام فارسی برند</label>
+            <input
+              className="border p-2 w-full mb-2"
+              placeholder="نام فارسی برند"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
 
-      {/* ADD MODAL */}
+            <label className="block mb-1">نام اتگلیسی برند</label>
+            <input
+              className="border p-2 w-full mb-2"
+              placeholder="نام انگلیسی برند"
+              value={enTitle}
+              onChange={(e) => setEnTitle(e.target.value)}
+            />
 
-      <AddModal
-        isOpen={isModalOpenAdd}
-        onClose={() => setIsModalOpenAdd(false)}
-        title={title}
-        setTitle={setTitle}
-        onAdd={addBrand}
-      />
+            <Button onClick={addBrand}>اضافه کردن</Button>
 
-      {/* EDIT MODAL */}
+            <button
+              className="mr-2 px-3 py-2 cursor-pointer"
+              onClick={() => setIsModalOpenAdd(false)}
+            >
+              بستن
+            </button>
+          </div>
+        </div>
+      )}
+      {/* Edit Category Modal */}
+      {isModalOpenEdit && (
+        <div
+          className="fixed inset-0 bg-black/40 flex items-center justify-center"
+          onClick={() => setIsModalOpenEdit(false)}
+        >
+          <div
+            className="bg-white p-4 rounded-md w-96"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 className="mb-3">ویرایش دسته‌بندی</h3>
+            <label className="block mb-1">نام فارسی برند</label>
+            <input
+              className="border p-2 w-full mb-2"
+              placeholder="نام فارسی برند"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
 
-      <EditModal
-        isOpen={isModalOpenEdit}
-        onClose={() => setIsModalOpenEdit(false)}
-        title={title}
-        setTitle={setTitle}
-        isActive={isActive}
-        setIsActive={setIsActive}
-        onEdit={updateBrand}
-      />
+            <label className="block mb-1">نام اتگلیسی برند</label>
+            <input
+              className="border p-2 w-full mb-2"
+              placeholder="نام انگلیسی برند"
+              value={enTitle}
+              onChange={(e) => setEnTitle(e.target.value)}
+            />
+            <Button onClick={updateBrand}>ویرایش</Button>
 
-      {/* DELETE MODAL */}
+            <button
+              className="mr-2 px-3 py-2 cursor-pointer"
+              onClick={() => setIsModalOpenEdit(false)}
+            >
+              بستن
+            </button>
+          </div>
+        </div>
+      )}
 
+      {/* Delete Modal */}
       {isModalOpenDelete && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center">
           <div className="bg-white p-4 rounded-md w-96">
-            <p className="mb-3">آیا از حذف برند مطمئن هستید؟</p>
+            <p className="mb-3">آیا از حذف دسته‌بندی مطمئن هستید؟</p>
 
             <DeleteButton onClick={deleteBrand}>حذف</DeleteButton>
 
