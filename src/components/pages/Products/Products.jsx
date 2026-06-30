@@ -18,7 +18,7 @@ export default function Products() {
   const [isOpenModalEditProduct, setIsOpenModalEditProduct] = useState(false);
   const [isOpenModalDeleteProduct, setIsOpenModalDeleteProduct] =
     useState(false);
-
+const [search , setSearch] = useState("");
   const [name, setName] = useState("");
   const [brandId, setBrandId] = useState("");
   const [sku, setSku] = useState("");
@@ -28,6 +28,9 @@ export default function Products() {
   const [categoryId, setCategoryId] = useState("");
   const [nextId, setNextId] = useState(4);
   const [selectedProductId, setSelectedProductId] = useState(null);
+  const filteredProducts = [...products].filter((product) =>
+product.name.toLowerCase().includes(search.toLowerCase()),
+  );
 
   function addProduct() {
     if (!name.trim() || !sku.trim() || !price || !stock || !categoryId) {
@@ -118,7 +121,7 @@ export default function Products() {
         <input
           className="h-12 leading-12 px-3 border border-gray-200 rounded bg-white w-full"
           type="text"
-          placeholder="جستجوی دسته‌بندی"
+          placeholder="جستجوی محصول"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -158,7 +161,7 @@ export default function Products() {
           </thead>
 
           <tbody>
-            {products.map((product) => {
+            {filteredProducts.map((product) => {
               const category = categories.find(
                 (cat) => cat.id === product.categoryId,
               );
