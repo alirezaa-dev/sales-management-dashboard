@@ -1,16 +1,17 @@
 import React from "react";
 import Button from "../../../ui/Button";
 
-export default function EditModal({
+export default function AddCustomerModal({
   isOpen,
   onClose,
   name,
   setName,
   phone,
   setPhone,
-  onEdit,
+  onAdd,
 }) {
   if (!isOpen) return null;
+
   return (
     <div
       className="fixed inset-0 bg-black/40 flex items-center justify-center"
@@ -20,7 +21,7 @@ export default function EditModal({
         className="bg-white p-4 rounded-md w-96"
         onClick={(e) => e.stopPropagation()}
       >
-        <h3 className="mb-3">ویرایش مشتری</h3>
+        <h3 className="mb-3">افزودن مشتری</h3>
 
         <input
           className="border p-2 w-full mb-2"
@@ -36,7 +37,7 @@ export default function EditModal({
           onChange={(e) => setPhone(e.target.value)}
         />
 
-        <Button onClick={onEdit}>ویرایش</Button>
+        <Button onClick={onAdd}>ثبت</Button>
 
         <button className="mr-2 px-3 py-2 cursor-pointer" onClick={onClose}>
           بستن
