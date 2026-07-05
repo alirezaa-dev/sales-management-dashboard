@@ -127,8 +127,8 @@ product.name.toLowerCase().includes(search.toLowerCase()),
         />
       </div>
       <div className="w-full overflow-x-auto rounded-md bg-white">
-        <table className="min-w-[1100px] text-right border-collapse">
-          <thead className="bg-gray-200">
+        <table className="w-full text-right border-collapse ">
+          <thead className="bg-gray-200 sticky top-0 z-10">
             <tr>
               <th className="px-4 py-4 border-b border-border text-sm whitespace-nowrap">
                 شماره

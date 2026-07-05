@@ -15,6 +15,7 @@ import useOrderForm from "./hooks/useOrderForm";
 
 import { DELIVERY_METHOD } from "../../../constants/deliveryMethod";
 import { ORDER_STATUS } from "../../../constants/orderStatus";
+import getTodayDate from "../../../utils/getTodayDate";
 
 export default function Orders() {
   // =========================
@@ -178,8 +179,6 @@ export default function Orders() {
       return;
     }
 
-    const today = new Date().toLocaleDateString("fa-IR");
-
     const newOrder = {
       id: nextId,
       orderNumber: String(nextOrderNumber),
@@ -191,7 +190,7 @@ export default function Orders() {
         deliveryMethod === DELIVERY_METHOD.PICKUP
           ? ORDER_STATUS.CONFIRMED
           : ORDER_STATUS.PENDING_SHIPMENT,
-      orderDate: today,
+      orderDate: getTodayDate(),
     };
 
     setOrders([...orders, newOrder]);
@@ -249,16 +248,14 @@ export default function Orders() {
   };
 
   const handleConfirmOrder = (orderId) => {
-  setOrders((prevOrders) =>
-    prevOrders.map((order) =>
-      order.id === orderId
-        ? { ...order, orderStatus: ORDER_STATUS.SHIPPED }
-        : order
-    )
-  );
-};
-
- 
+    setOrders((prevOrders) =>
+      prevOrders.map((order) =>
+        order.id === orderId
+          ? { ...order, orderStatus: ORDER_STATUS.SHIPPED }
+          : order,
+      ),
+    );
+  };
 
   return (
     <>

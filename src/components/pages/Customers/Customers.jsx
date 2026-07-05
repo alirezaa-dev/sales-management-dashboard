@@ -5,6 +5,8 @@ import DeleteButton from "../../ui/DeleteButton";
 import AddModal from "./components/Addmodal";
 import EditModal from "./components/EditModal";
 import { CustomerContext } from "../../../context/CustomerContext";
+import { formatDate } from "../../../utils/formatDate";
+import getTodayDate from "../../../utils/getTodayDate";
 
 export default function Customers() {
   const [isModalOpenDelete, setIsModalOpenDelete] = useState(false);
@@ -21,7 +23,7 @@ export default function Customers() {
 
   const [selectedCustomerId, setSelectedCustomerId] = useState(null);
 
-const {customers , setCustomers} = useContext(CustomerContext);
+  const { customers, setCustomers } = useContext(CustomerContext);
   const filteredCustomers = [...customers]
     .filter(
       (customer) =>
@@ -79,7 +81,7 @@ const {customers , setCustomers} = useContext(CustomerContext);
       name,
       phone,
       score: 0,
-      joinDate: new Date().toLocaleDateString("fa-IR"),
+      joinDate: getTodayDate(),
     };
 
     setCustomers((prev) => [...prev, newCustomer]);
@@ -156,7 +158,7 @@ const {customers , setCustomers} = useContext(CustomerContext);
       {/* TABLE */}
       <div className="w-full overflow-x-auto rounded-md bg-white">
         <table className="min-w-[900px] text-right border-collapse w-full">
-          <thead className="bg-gray-200">
+          <thead className="bg-gray-200 sticky top-0 z-10">
             <tr>
               <th className="px-4 py-4 border-b border-gray-100 text-sm whitespace-nowrap min-w-[70px]">
                 شماره
@@ -199,7 +201,7 @@ const {customers , setCustomers} = useContext(CustomerContext);
                 </td>
 
                 <td className="px-4 py-3 border-b border-gray-100 text-sm whitespace-nowrap">
-                  {customer.joinDate}
+                  {formatDate(customer.joinDate)}
                 </td>
 
                 <td className="px-4 py-3 border-b border-gray-100 text-sm whitespace-nowrap">

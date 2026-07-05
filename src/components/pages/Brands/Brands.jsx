@@ -109,13 +109,16 @@ export default function Brands() {
 
       <div className="w-full overflow-x-auto rounded-md bg-white">
         <table className="w-full text-right border-collapse">
-          <thead className="bg-gray-200">
+          <thead className="bg-gray-200 sticky top-0 z-10">
             <tr>
               <th className="px-4 py-4 border-b border-gray-100 text-sm whitespace-nowrap">
                 شماره
               </th>
               <th className="px-4 py-4 border-b border-gray-100 text-sm whitespace-nowrap">
                 نام برند
+              </th>
+                <th className="px-4 py-4 border-b border-gray-100 text-sm whitespace-nowrap">
+                نام انگلیسی برند
               </th>
               <th className="px-4 py-4 border-b border-gray-100 text-sm whitespace-nowrap">
                 تعداد محصولات
@@ -136,6 +139,9 @@ export default function Brands() {
 
                 <td className="px-4 py-3 border-b border-gray-100 text-sm whitespace-nowrap">
                   {brand.title}
+                </td>
+                <td className="px-4 py-3 border-b border-gray-100 text-sm whitespace-nowrap text-gray-500">
+                  {brand.enTitle}
                 </td>
 
                 <td className="px-4 py-3 border-b border-gray-100 text-sm whitespace-nowrap">
@@ -192,7 +198,7 @@ export default function Brands() {
               onChange={(e) => setTitle(e.target.value)}
             />
 
-            <label className="block mb-1">نام اتگلیسی برند</label>
+            <label className="block mb-1">نام انگلیسی برند</label>
             <input
               className="border p-2 w-full mb-2"
               placeholder="نام انگلیسی برند"
