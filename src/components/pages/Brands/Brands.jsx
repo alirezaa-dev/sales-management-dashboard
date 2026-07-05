@@ -1,37 +1,39 @@
 import { useContext, useState } from "react";
-import Button from "../../ui/Button";
-import { MdOutlineModeEdit, MdDeleteOutline } from "react-icons/md";
-import DeleteButton from "../../ui/DeleteButton";
-import ActiveStatus from "../../ui/ActiveStatus";
 import { BrandContext } from "../../../context/BrandContext";
 import { ProductContext } from "../../../context/ProductContext";
 import BrandsTable from "./components/BrandsTable";
 import AddBrandModal from "./components/AddBrandModal";
 import EditBrandModal from "./components/EditBrandModal";
 import DeleteBrandModal from "./components/DeleteBrandModal";
+import BrandSearch from "./components/BrandSearch";
+import BrandsHeader from "./components/BrandsHeader";
 
 export default function Brands() {
+  // Contexts
   const { brands, setBrands } = useContext(BrandContext);
   const { products } = useContext(ProductContext);
 
+  // States
   const [isModalOpenAdd, setIsModalOpenAdd] = useState(false);
   const [isModalOpenEdit, setIsModalOpenEdit] = useState(false);
   const [isModalOpenDelete, setIsModalOpenDelete] = useState(false);
 
   const [title, setTitle] = useState("");
-  const [isActive, setIsActive] = useState(true);
   const [enTitle, setEnTitle] = useState("");
+  const [isActive, setIsActive] = useState(true);
   const [search, setSearch] = useState("");
 
   const [selectedBrandId, setSelectedBrandId] = useState(null);
 
-  const countProducts = (brandId) =>
-    products.filter((product) => product.brandId === brandId).length;
-
+  // Derived Data
   const filteredBrands = brands.filter((brand) =>
     brand.title.toLowerCase().includes(search.toLowerCase()),
   );
 
+  const countProducts = (brandId) =>
+    products.filter((product) => product.brandId === brandId).length;
+
+  // Helper Functions
   function resetForm() {
     setTitle("");
     setEnTitle("");
@@ -39,6 +41,7 @@ export default function Brands() {
     setSelectedBrandId(null);
   }
 
+  // CRUD Functions
   function addBrand() {
     if (!title.trim()) {
       alert("لطفا نام برند را وارد کنید");
@@ -53,6 +56,7 @@ export default function Brands() {
     };
 
     setBrands((prev) => [...prev, newBrand]);
+
     resetForm();
     setIsModalOpenAdd(false);
   }
@@ -86,11 +90,14 @@ export default function Brands() {
     resetForm();
     setIsModalOpenDelete(false);
   }
+
+  // Event Handlers
   function handleEditClick(brand) {
     setSelectedBrandId(brand.id);
     setTitle(brand.title);
     setEnTitle(brand.enTitle);
     setIsActive(brand.isActive);
+
     setIsModalOpenEdit(true);
   }
 
@@ -101,24 +108,10 @@ export default function Brands() {
 
   return (
     <>
-      <div className="flex flex-row justify-between items-center mb-4">
-        <h2 className="text-lg font-bold">مدیریت برندها</h2>
-
-        <Button onClick={() => setIsModalOpenAdd(true)}>
-          <span className="text-lg pl-2">+</span>
-          افزودن برند جدید
-        </Button>
-      </div>
+      {/* Header */}
+      <BrandsHeader onAddBrand={() => setIsModalOpenAdd(true)} />
       {/* Search */}
-      <div className="flex flex-row gap-4">
-        <input
-          className="h-12 leading-12 px-3 border border-gray-200 rounded bg-white w-full"
-          type="text"
-          placeholder="جستجوی برند"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-      </div>
+      <BrandSearch search={search} setSearch={setSearch} />
 
       {/* Table */}
 
@@ -131,7 +124,10 @@ export default function Brands() {
       {/* Add Brand Modal */}
       <AddBrandModal
         isOpen={isModalOpenAdd}
-        onClose={() => setIsModalOpenAdd(false)}
+        onClose={() => {
+          resetForm();
+          setIsModalOpenAdd(false);
+        }}
         onAdd={addBrand}
         title={title}
         setTitle={setTitle}
@@ -141,7 +137,10 @@ export default function Brands() {
       {/* Edit Category Modal */}
       <EditBrandModal
         isOpen={isModalOpenEdit}
-        onClose={() => setIsModalOpenEdit(false)}
+        onClose={() => {
+          resetForm();
+          setIsModalOpenEdit(false);
+        }}
         onSubmit={updateBrand}
         title={title}
         setTitle={setTitle}
@@ -154,7 +153,10 @@ export default function Brands() {
       {/* Delete Modal */}
       <DeleteBrandModal
         isOpen={isModalOpenDelete}
-        onClose={() => setIsModalOpenDelete(false)}
+        onClose={() => {
+          resetForm();
+          setIsModalOpenDelete(false);
+        }}
         onDelete={deleteBrand}
       />
     </>
