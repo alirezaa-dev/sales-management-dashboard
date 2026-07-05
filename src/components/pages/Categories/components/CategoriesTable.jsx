@@ -14,7 +14,7 @@ export default function CategoriesTable({
         <thead className="bg-gray-200 sticky top-0 z-10">
           <tr>
             <th className="px-4 py-4 border-b border-gray-100 text-sm whitespace-nowrap">
-              شماره
+              ردیف
             </th>
             <th className="px-4 py-4 border-b border-gray-100 text-sm whitespace-nowrap">
               نام دسته‌بندی
@@ -38,7 +38,7 @@ export default function CategoriesTable({
           {categories.map((category) => (
             <tr key={category.id}>
               <td className="px-4 py-3 border-b border-gray-100 text-sm whitespace-nowrap">
-                {category.id}
+                {category.rowNumber}
               </td>
 
               <td className="px-4 py-3 border-b border-gray-100 text-sm whitespace-nowrap">

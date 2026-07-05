@@ -32,9 +32,14 @@ export default function Categories() {
     useState(false);
 
   // Derived Data
-  const filteredCategories = categories.filter((category) =>
-    category.title.toLowerCase().includes(search.toLowerCase()),
-  );
+  const filteredCategories = categories
+    .filter((category) =>
+      category.title.toLowerCase().includes(search.toLowerCase()),
+    )
+    .map((category, index) => ({
+      ...category,
+      rowNumber: index + 1,
+    }));
 
   // Helpers
   const countProducts = (categoryId) =>
