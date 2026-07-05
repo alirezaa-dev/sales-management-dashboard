@@ -5,6 +5,10 @@ import DeleteButton from "../../ui/DeleteButton";
 import ActiveStatus from "../../ui/ActiveStatus";
 import { BrandContext } from "../../../context/BrandContext";
 import { ProductContext } from "../../../context/ProductContext";
+import BrandsTable from "./components/BrandsTable";
+import AddBrandModal from "./components/AddBrandModal";
+import EditBrandModal from "./components/EditBrandModal";
+import DeleteBrandModal from "./components/DeleteBrandModal";
 
 export default function Brands() {
   const { brands, setBrands } = useContext(BrandContext);
@@ -21,8 +25,6 @@ export default function Brands() {
 
   const [selectedBrandId, setSelectedBrandId] = useState(null);
 
-  const [nextId, setNextId] = useState(4);
-
   const countProducts = (brandId) =>
     products.filter((product) => product.brandId === brandId).length;
 
@@ -34,6 +36,7 @@ export default function Brands() {
     setTitle("");
     setEnTitle("");
     setIsActive(true);
+    setSelectedBrandId(null);
   }
 
   function addBrand() {
@@ -43,15 +46,13 @@ export default function Brands() {
     }
 
     const newBrand = {
-      id: nextId,
+      id: Math.max(...brands.map((brand) => brand.id), 0) + 1,
       title,
       enTitle,
       isActive: true,
     };
 
     setBrands((prev) => [...prev, newBrand]);
-    setNextId((prev) => prev + 1);
-
     resetForm();
     setIsModalOpenAdd(false);
   }
@@ -68,6 +69,7 @@ export default function Brands() {
           ? {
               ...brand,
               title,
+              enTitle,
               isActive,
             }
           : brand,
@@ -75,15 +77,26 @@ export default function Brands() {
     );
 
     resetForm();
-    setSelectedBrandId(null);
     setIsModalOpenEdit(false);
   }
 
   function deleteBrand() {
     setBrands((prev) => prev.filter((brand) => brand.id !== selectedBrandId));
 
-    setSelectedBrandId(null);
+    resetForm();
     setIsModalOpenDelete(false);
+  }
+  function handleEditClick(brand) {
+    setSelectedBrandId(brand.id);
+    setTitle(brand.title);
+    setEnTitle(brand.enTitle);
+    setIsActive(brand.isActive);
+    setIsModalOpenEdit(true);
+  }
+
+  function handleDeleteClick(id) {
+    setSelectedBrandId(id);
+    setIsModalOpenDelete(true);
   }
 
   return (
@@ -107,171 +120,43 @@ export default function Brands() {
         />
       </div>
 
-      <div className="w-full overflow-x-auto rounded-md bg-white">
-        <table className="w-full text-right border-collapse">
-          <thead className="bg-gray-200 sticky top-0 z-10">
-            <tr>
-              <th className="px-4 py-4 border-b border-gray-100 text-sm whitespace-nowrap">
-                شماره
-              </th>
-              <th className="px-4 py-4 border-b border-gray-100 text-sm whitespace-nowrap">
-                نام برند
-              </th>
-                <th className="px-4 py-4 border-b border-gray-100 text-sm whitespace-nowrap">
-                نام انگلیسی برند
-              </th>
-              <th className="px-4 py-4 border-b border-gray-100 text-sm whitespace-nowrap">
-                تعداد محصولات
-              </th>
+      {/* Table */}
 
-              <th className="px-4 py-4 border-b border-gray-100 text-sm whitespace-nowrap">
-                عملیات
-              </th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {brands.map((brand) => (
-              <tr key={brand.id}>
-                <td className="px-4 py-3 border-b border-gray-100 text-sm whitespace-nowrap">
-                  {brand.id}
-                </td>
-
-                <td className="px-4 py-3 border-b border-gray-100 text-sm whitespace-nowrap">
-                  {brand.title}
-                </td>
-                <td className="px-4 py-3 border-b border-gray-100 text-sm whitespace-nowrap text-gray-500">
-                  {brand.enTitle}
-                </td>
-
-                <td className="px-4 py-3 border-b border-gray-100 text-sm whitespace-nowrap">
-                  {countProducts(brand.id)}
-                </td>
-
-                <td className="px-4 py-3 border-b border-gray-100 text-sm whitespace-nowrap">
-                  <div className="flex items-center gap-2">
-                    <button
-                      className="p-2 rounded-md bg-blue-100 cursor-pointer"
-                      onClick={() => {
-                        setSelectedBrandId(brand.id);
-                        setTitle(brand.title);
-                        setIsActive(brand.isActive);
-                        setEnTitle(brand.enTitle);
-                        setIsModalOpenEdit(true);
-                      }}
-                    >
-                      <MdOutlineModeEdit className="text-blue-600" />
-                    </button>
-
-                    <button
-                      className="p-2 rounded-md bg-red-100 cursor-pointer"
-                      onClick={() => {
-                        setSelectedBrandId(brand.id);
-                        setIsModalOpenDelete(true);
-                      }}
-                    >
-                      <MdDeleteOutline className="text-red-500" />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <BrandsTable
+        brands={filteredBrands}
+        countProducts={countProducts}
+        onEdit={handleEditClick}
+        onDelete={handleDeleteClick}
+      />
       {/* Add Brand Modal */}
-      {isModalOpenAdd && (
-        <div
-          className="fixed inset-0 bg-black/40 flex items-center justify-center"
-          onClick={() => setIsModalOpenAdd(false)}
-        >
-          <div
-            className="bg-white p-4 rounded-md w-96"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h3 className="mb-3">افزودن برند</h3>
-            <label className="block mb-1">نام فارسی برند</label>
-            <input
-              className="border p-2 w-full mb-2"
-              placeholder="نام فارسی برند"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-
-            <label className="block mb-1">نام انگلیسی برند</label>
-            <input
-              className="border p-2 w-full mb-2"
-              placeholder="نام انگلیسی برند"
-              value={enTitle}
-              onChange={(e) => setEnTitle(e.target.value)}
-            />
-
-            <Button onClick={addBrand}>اضافه کردن</Button>
-
-            <button
-              className="mr-2 px-3 py-2 cursor-pointer"
-              onClick={() => setIsModalOpenAdd(false)}
-            >
-              بستن
-            </button>
-          </div>
-        </div>
-      )}
+      <AddBrandModal
+        isOpen={isModalOpenAdd}
+        onClose={() => setIsModalOpenAdd(false)}
+        onAdd={addBrand}
+        title={title}
+        setTitle={setTitle}
+        enTitle={enTitle}
+        setEnTitle={setEnTitle}
+      />
       {/* Edit Category Modal */}
-      {isModalOpenEdit && (
-        <div
-          className="fixed inset-0 bg-black/40 flex items-center justify-center"
-          onClick={() => setIsModalOpenEdit(false)}
-        >
-          <div
-            className="bg-white p-4 rounded-md w-96"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h3 className="mb-3">ویرایش دسته‌بندی</h3>
-            <label className="block mb-1">نام فارسی برند</label>
-            <input
-              className="border p-2 w-full mb-2"
-              placeholder="نام فارسی برند"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-
-            <label className="block mb-1">نام اتگلیسی برند</label>
-            <input
-              className="border p-2 w-full mb-2"
-              placeholder="نام انگلیسی برند"
-              value={enTitle}
-              onChange={(e) => setEnTitle(e.target.value)}
-            />
-            <Button onClick={updateBrand}>ویرایش</Button>
-
-            <button
-              className="mr-2 px-3 py-2 cursor-pointer"
-              onClick={() => setIsModalOpenEdit(false)}
-            >
-              بستن
-            </button>
-          </div>
-        </div>
-      )}
+      <EditBrandModal
+        isOpen={isModalOpenEdit}
+        onClose={() => setIsModalOpenEdit(false)}
+        onSubmit={updateBrand}
+        title={title}
+        setTitle={setTitle}
+        enTitle={enTitle}
+        setEnTitle={setEnTitle}
+        isActive={isActive}
+        setIsActive={setIsActive}
+      />
 
       {/* Delete Modal */}
-      {isModalOpenDelete && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center">
-          <div className="bg-white p-4 rounded-md w-96">
-            <p className="mb-3">آیا از حذف دسته‌بندی مطمئن هستید؟</p>
-
-            <DeleteButton onClick={deleteBrand}>حذف</DeleteButton>
-
-            <button
-              className="mr-2 px-3 py-2 cursor-pointer"
-              onClick={() => setIsModalOpenDelete(false)}
-            >
-              بستن
-            </button>
-          </div>
-        </div>
-      )}
+      <DeleteBrandModal
+        isOpen={isModalOpenDelete}
+        onClose={() => setIsModalOpenDelete(false)}
+        onDelete={deleteBrand}
+      />
     </>
   );
 }
