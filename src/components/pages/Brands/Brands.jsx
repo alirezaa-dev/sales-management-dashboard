@@ -24,11 +24,12 @@ export default function Brands() {
   const [search, setSearch] = useState("");
 
   const [selectedBrandId, setSelectedBrandId] = useState(null);
-
-  // Derived Data
-  const filteredBrands = brands.filter((brand) =>
-    brand.title.toLowerCase().includes(search.toLowerCase()),
-  );
+  const brandsWithRowNumber = brands
+    .filter((brand) => brand.title.toLowerCase().includes(search.toLowerCase()))
+    .map((brand, index) => ({
+      ...brand,
+      rowNumber: index + 1,
+    }));
 
   const countProducts = (brandId) =>
     products.filter((product) => product.brandId === brandId).length;
@@ -116,7 +117,7 @@ export default function Brands() {
       {/* Table */}
 
       <BrandsTable
-        brands={filteredBrands}
+        brands={brandsWithRowNumber}
         countProducts={countProducts}
         onEdit={handleEditClick}
         onDelete={handleDeleteClick}

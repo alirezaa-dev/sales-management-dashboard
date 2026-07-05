@@ -12,7 +12,7 @@ export default function BrandsTable({
         <thead className="bg-gray-200 sticky top-0 z-10">
           <tr>
             <th className="px-4 py-4 border-b border-gray-100 text-sm whitespace-nowrap">
-              شماره
+              ردیف
             </th>
             <th className="px-4 py-4 border-b border-gray-100 text-sm whitespace-nowrap">
               نام برند
@@ -34,7 +34,7 @@ export default function BrandsTable({
           {brands.map((brand) => (
             <tr key={brand.id}>
               <td className="px-4 py-3 border-b border-gray-100 text-sm whitespace-nowrap">
-                {brand.id}
+                {brand.rowNumber}
               </td>
 
               <td className="px-4 py-3 border-b border-gray-100 text-sm whitespace-nowrap">
@@ -52,14 +52,14 @@ export default function BrandsTable({
                 <div className="flex items-center gap-2">
                   <button
                     className="p-2 rounded-md bg-blue-100 cursor-pointer"
-                    onClick={() => handleEditClick(brand)}
+                    onClick={() => onEdit(brand)}
                   >
                     <MdOutlineModeEdit className="text-blue-600" />
                   </button>
 
                   <button
                     className="p-2 rounded-md bg-red-100 cursor-pointer"
-                    onClick={() => handleDeleteClick(brand.id)}
+                    onClick={() => onDelete(brand.id)}
                   >
                     <MdDeleteOutline className="text-red-500" />
                   </button>
