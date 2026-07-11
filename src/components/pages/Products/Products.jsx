@@ -25,7 +25,6 @@ export default function Products() {
   const [stock, setStock] = useState("");
   const [isActive, setIsActive] = useState(true);
   const [categoryId, setCategoryId] = useState("");
-  const [nextId, setNextId] = useState(4);
   const [selectedProductId, setSelectedProductId] = useState(null);
   const filteredProducts = products.filter((product) =>
     product.name.toLowerCase().includes(search.toLowerCase()),
@@ -67,10 +66,13 @@ export default function Products() {
   function addProduct() {
     if (!validateForm()) return;
 
+    const newId =
+      products.length > 0 ? Math.max(...products.map((p) => p.id)) + 1 : 1;
+
     setProducts((prev) => [
       ...prev,
       {
-        id: nextId,
+        id: newId,
         name: name.trim(),
         sku: sku.trim(),
         price: Number(price),
@@ -80,8 +82,6 @@ export default function Products() {
         categoryId: Number(categoryId),
       },
     ]);
-
-    setNextId((prev) => prev + 1);
 
     resetForm();
     setCategoryId(categories[0]?.id || "");

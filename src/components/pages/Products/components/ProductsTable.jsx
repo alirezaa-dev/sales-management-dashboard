@@ -56,7 +56,7 @@ export default function ProductsTable({
         </thead>
 
         <tbody>
-          {products.map((product) => {
+          {products.map((product, index) => {
             const category = categories.find(
               (cat) => cat.id === product.categoryId,
             );
@@ -68,7 +68,7 @@ export default function ProductsTable({
             return (
               <tr key={product.id}>
                 <td className="px-4 py-4 border-b border-border text-sm whitespace-nowrap">
-                  {formatNumber(product.id)}
+                  {formatNumber(index + 1)}
                 </td>
 
                 <td className="px-4 py-4 border-b border-border text-sm whitespace-nowrap">
