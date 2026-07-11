@@ -1,4 +1,5 @@
 import { MdOutlineModeEdit, MdDeleteOutline } from "react-icons/md";
+import { formatNumber } from "../../../../utils/formatNumber";
 
 export default function BrandsTable({
   brands,
@@ -34,7 +35,7 @@ export default function BrandsTable({
           {brands.map((brand) => (
             <tr key={brand.id}>
               <td className="px-4 py-3 border-b border-gray-100 text-sm whitespace-nowrap">
-                {brand.rowNumber}
+                {formatNumber(brand.rowNumber)}
               </td>
 
               <td className="px-4 py-3 border-b border-gray-100 text-sm whitespace-nowrap">
@@ -45,7 +46,7 @@ export default function BrandsTable({
               </td>
 
               <td className="px-4 py-3 border-b border-gray-100 text-sm whitespace-nowrap">
-                {countProducts(brand.id)}
+                {formatNumber(countProducts(brand.id))}
               </td>
 
               <td className="px-4 py-3 border-b border-gray-100 text-sm whitespace-nowrap">

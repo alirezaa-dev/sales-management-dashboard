@@ -9,6 +9,8 @@ import ActiveStatus from "../../ui/ActiveStatus";
 import OutStock from "../../ui/OutStock";
 import DeleteButton from "../../ui/DeleteButton";
 import { BrandContext } from "../../../context/BrandContext";
+import { formatPrice } from "../../../utils/formatPrice";
+import { formatNumber } from "../../../utils/formatNumber";
 
 export default function Products() {
   const { categories } = useContext(CategoryContext);
@@ -18,7 +20,7 @@ export default function Products() {
   const [isOpenModalEditProduct, setIsOpenModalEditProduct] = useState(false);
   const [isOpenModalDeleteProduct, setIsOpenModalDeleteProduct] =
     useState(false);
-const [search , setSearch] = useState("");
+  const [search, setSearch] = useState("");
   const [name, setName] = useState("");
   const [brandId, setBrandId] = useState("");
   const [sku, setSku] = useState("");
@@ -29,7 +31,7 @@ const [search , setSearch] = useState("");
   const [nextId, setNextId] = useState(4);
   const [selectedProductId, setSelectedProductId] = useState(null);
   const filteredProducts = [...products].filter((product) =>
-product.name.toLowerCase().includes(search.toLowerCase()),
+    product.name.toLowerCase().includes(search.toLowerCase()),
   );
 
   function addProduct() {
@@ -131,7 +133,7 @@ product.name.toLowerCase().includes(search.toLowerCase()),
           <thead className="bg-gray-200 sticky top-0 z-10">
             <tr>
               <th className="px-4 py-4 border-b border-border text-sm whitespace-nowrap">
-                شماره
+                ردیف
               </th>
               <th className="px-4 py-4 border-b border-border text-sm whitespace-nowrap">
                 نام محصول
@@ -173,7 +175,7 @@ product.name.toLowerCase().includes(search.toLowerCase()),
               return (
                 <tr key={product.id}>
                   <td className="px-4 py-4 border-b border-border text-sm whitespace-nowrap">
-                    {product.id}
+                    {formatNumber(product.id)}
                   </td>
 
                   <td className="px-4 py-4 border-b border-border text-sm whitespace-nowrap">
@@ -185,7 +187,7 @@ product.name.toLowerCase().includes(search.toLowerCase()),
                   </td>
 
                   <td className="px-4 py-4 border-b border-border text-sm whitespace-nowrap">
-                    {product.sku}
+                    {formatNumber(product.sku)}
                   </td>
 
                   <td className="px-4 py-4 border-b border-border text-sm whitespace-nowrap">
@@ -193,11 +195,11 @@ product.name.toLowerCase().includes(search.toLowerCase()),
                   </td>
 
                   <td className="px-4 py-4 border-b border-border text-sm whitespace-nowrap">
-                    {product.price}
+                    {formatPrice(product.price)}
                   </td>
 
                   <td className="px-4 py-4 border-b border-border text-sm whitespace-nowrap">
-                    {product.stock > 0 ? product.stock : <OutStock />}
+                    {product.stock > 0 ? formatNumber(product.stock) : <OutStock />}
                   </td>
 
                   <td className="px-4 py-4 border-b border-border text-sm whitespace-nowrap">
@@ -304,11 +306,11 @@ product.name.toLowerCase().includes(search.toLowerCase()),
             />
             <label className="block mb-1">قیمت (تومان)</label>
             <input
-              type="number"
+              type="text"
               className="border p-2 w-full mb-2"
               placeholder="قیمت"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
+              value={formatPrice(price)}
+              onChange={(e) => setPrice(parsePrice(e.target.value))}
             />
 
             <Button onClick={addProduct}>اضافه کردن</Button>
@@ -385,11 +387,11 @@ product.name.toLowerCase().includes(search.toLowerCase()),
             />
             <label className="block mb-1">قیمت (تومان)</label>
             <input
-              type="number"
+              type="text"
               className="border p-2 w-full mb-2"
               placeholder="قیمت"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
+              value={formatPrice(price)}
+              onChange={(e) => setPrice(parsePrice(e.target.value))}
             />
 
             <label className="block mb-1">وضعیت</label>

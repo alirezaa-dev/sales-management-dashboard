@@ -1,3 +1,4 @@
+import { formatPrice } from "../../../../../utils/formatPrice";
 export default function ProductSelector({
   productSearch,
   setProductSearch,
@@ -40,9 +41,7 @@ export default function ProductSelector({
       {showProducts && (
         <div className="absolute bottom-full mb-1 left-0 right-0 bg-gray-100 border border-gray-200 rounded-md shadow-xl max-h-72 overflow-y-auto flex flex-col-reverse z-[100]">
           {filteredProducts.map((product) => {
-            const selected = selectedProducts.some(
-              (p) => p.id === product.id,
-            );
+            const selected = selectedProducts.some((p) => p.id === product.id);
 
             return (
               <div
@@ -62,27 +61,21 @@ export default function ProductSelector({
                       <span className="text-green-600 font-bold">✔</span>
                     )}
 
-                    <span className="font-medium text-sm">
-                      {product.name}
-                    </span>
+                    <span className="font-medium text-sm">{product.name}</span>
                   </div>
                 </div>
 
                 <div className="flex gap-8 text-sm text-right w-1/2">
                   <span
                     className={
-                      product.stock
-                        ? "text-green-500"
-                        : "text-red-600"
+                      product.stock ? "text-green-500" : "text-red-600"
                     }
                   >
-                    {product.stock
-                      ? `موجودی : ${product.stock}`
-                      : "ناموجود"}
+                    {product.stock ? `موجودی : ${product.stock}` : "ناموجود"}
                   </span>
 
                   <span className="font-medium text-sm w-1/2 text-left">
-                    {product.price.toLocaleString()} تومان
+                    {formatPrice(product.price)} تومان
                   </span>
                 </div>
               </div>

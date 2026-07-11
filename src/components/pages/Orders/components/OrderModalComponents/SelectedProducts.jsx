@@ -1,3 +1,4 @@
+import { formatPrice } from "../../../../../utils/formatPrice";
 export default function SelectedProducts({
   selectedProducts,
   increaseQuantity,
@@ -40,7 +41,7 @@ export default function SelectedProducts({
           </div>
 
           <div className="text-sm">
-            {(product.price * product.quantity).toLocaleString()} تومان
+            {formatPrice(product.price * product.quantity)} تومان
           </div>
 
           <button

@@ -6,6 +6,8 @@ import DeliveryMethod from "../../../ui/DeliveryMethod";
 import { DELIVERY_METHOD } from "../../../../constants/deliveryMethod";
 import { ORDER_STATUS } from "../../../../constants/orderStatus";
 import { formatDate } from "../../../../utils/formatDate";
+import { formatPrice } from "../../../../utils/formatPrice";
+import { formatNumber } from "../../../../utils/formatNumber";
 
 export default function OrdersTable({
   orders,
@@ -20,7 +22,7 @@ export default function OrdersTable({
         <thead className="bg-gray-200 sticky top-0 z-10">
           <tr>
             <th className="px-4 py-4 border-b border-border text-sm whitespace-nowrap">
-              شماره
+              ردیف
             </th>
 
             <th className="px-4 py-4 border-b border-border text-sm whitespace-nowrap">
@@ -36,7 +38,7 @@ export default function OrdersTable({
             </th>
 
             <th className="px-4 py-4 border-b border-border text-sm whitespace-nowrap">
-              مبلغ سفارش(تومان)
+              مبلغ سفارش (تومان)
             </th>
 
             <th className="px-4 py-4 border-b border-border text-sm whitespace-nowrap">
@@ -66,11 +68,11 @@ export default function OrdersTable({
             return (
               <tr key={order.id}>
                 <td className="px-4 py-4 border-b border-border text-sm whitespace-nowrap">
-                  {order.id}
+                  {formatNumber(order.id)}
                 </td>
 
                 <td className="px-4 py-4 border-b border-border text-sm whitespace-nowrap">
-                  {order.orderNumber}
+                  {formatNumber(order.orderNumber)}
                 </td>
 
                 <td className="px-4 py-4 border-b border-border text-sm whitespace-nowrap">
@@ -78,11 +80,11 @@ export default function OrdersTable({
                 </td>
 
                 <td className="px-4 py-4 border-b border-border text-sm whitespace-nowrap">
-                  {order.items.length}
+                  {formatNumber(order.items.length)}
                 </td>
 
                 <td className="px-4 py-4 border-b border-border text-sm whitespace-nowrap">
-                  {order.orderAmount.toLocaleString()}
+                  {formatPrice(order.orderAmount)}
                 </td>
 
                 <td className="px-4 py-4 border-b border-border text-sm whitespace-nowrap">

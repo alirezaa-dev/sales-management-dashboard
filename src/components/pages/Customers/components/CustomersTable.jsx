@@ -1,5 +1,6 @@
 import { MdOutlineModeEdit, MdDeleteOutline } from "react-icons/md";
 import { formatDate } from "../../../../utils/formatDate";
+import { formatNumber } from "../../../../utils/formatNumber";
 
 export default function CustomersTable({ customers, onEdit, onDelete }) {
   return (
@@ -37,7 +38,7 @@ export default function CustomersTable({ customers, onEdit, onDelete }) {
           {customers.map((customer) => (
             <tr key={customer.id}>
               <td className="px-4 py-3 border-b border-gray-100 text-sm whitespace-nowrap">
-                {customer.rowNumber}
+                {formatNumber(customer.rowNumber)}
               </td>
 
               <td className="px-4 py-3 border-b border-gray-100 text-sm whitespace-nowrap">
@@ -45,11 +46,11 @@ export default function CustomersTable({ customers, onEdit, onDelete }) {
               </td>
 
               <td className="px-4 py-3 border-b border-gray-100 text-sm whitespace-nowrap">
-                {customer.phone}
+                {formatNumber(customer.phone)}
               </td>
 
               <td className="px-4 py-3 border-b border-gray-100 text-sm whitespace-nowrap">
-                {customer.score}
+                {formatNumber(customer.score)}
               </td>
 
               <td className="px-4 py-3 border-b border-gray-100 text-sm whitespace-nowrap">

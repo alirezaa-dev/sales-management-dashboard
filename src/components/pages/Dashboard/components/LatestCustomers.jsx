@@ -1,3 +1,4 @@
+import { formatNumber } from "../../../../utils/formatNumber";
 export default function LatestCustomers({ customers }) {
   return (
     <div className="grow rounded-lg bg-white p-6 shadow">
@@ -11,7 +12,7 @@ export default function LatestCustomers({ customers }) {
           >
             <p className="font-semibold">{customer.name}</p>
 
-            <p className="mt-1 text-sm text-gray-500">{customer.phone}</p>
+            <p className="mt-1 text-sm text-gray-500">{formatNumber(customer.phone)}</p>
           </div>
         ))}
       </div>

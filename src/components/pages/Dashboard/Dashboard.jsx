@@ -19,25 +19,22 @@ export default function Dashboard() {
 
   /*  Dashboard Data  */
 
-  const totalSales = orders.reduce(
-    (sum, order) => sum + order.orderAmount,
-    0,
-  );
+  const totalSales = orders.reduce((sum, order) => sum + order.orderAmount, 0);
 
   const pendingShipment = orders.filter(
-    (order) => order.status === ORDER_STATUS.PENDING_SHIPMENT,
+    (order) => order.orderStatus === ORDER_STATUS.PENDING_SHIPMENT,
   ).length;
 
   const confirmed = orders.filter(
-    (order) => order.status === ORDER_STATUS.CONFIRMED,
+    (order) => order.orderStatus === ORDER_STATUS.CONFIRMED,
   ).length;
 
   const shipped = orders.filter(
-    (order) => order.status === ORDER_STATUS.SHIPPED,
+    (order) => order.orderStatus === ORDER_STATUS.SHIPPED,
   ).length;
 
   const canceled = orders.filter(
-    (order) => order.status === ORDER_STATUS.CANCELED,
+    (order) => order.orderStatus === ORDER_STATUS.CANCELED,
   ).length;
 
   const productSales = {};
@@ -65,6 +62,8 @@ export default function Dashboard() {
   const latestOrders = [...orders].reverse().slice(0, 5);
 
   const latestCustomers = [...customers].reverse().slice(0, 5);
+  console.log(orders);
+  console.log(orders.map((order) => order.status));
 
   return (
     <div className="space-y-8">
@@ -89,10 +88,7 @@ export default function Dashboard() {
           canceled={canceled}
         />
 
-        <LatestOrders
-          orders={latestOrders}
-          customers={customers}
-        />
+        <LatestOrders orders={latestOrders} customers={customers} />
       </div>
 
       {/*  Customers & Products  */}

@@ -1,3 +1,4 @@
+import { formatNumber } from "../../../../utils/formatNumber";
 export default function TopProducts({ products }) {
   return (
     <div className="rounded-lg bg-white p-6 shadow grow">
@@ -12,7 +13,7 @@ export default function TopProducts({ products }) {
             <p className="w-3/5 text-sm">{product.name}</p>
 
             <span className=" px-3 py-1 text-sm font-bold text-indigo-700">
-              {product.soldCount} عدد
+              {formatNumber(product.soldCount)} عدد
             </span>
           </div>
         ))}

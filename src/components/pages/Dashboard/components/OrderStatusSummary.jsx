@@ -1,5 +1,6 @@
 import OrderStatus from "../../../ui/OrderStatus";
 import { ORDER_STATUS } from "../../../../constants/orderStatus";
+import { formatNumber } from "../../../../utils/formatNumber";
 
 export default function OrderStatusSummary({
   pendingShipment,
@@ -32,9 +33,9 @@ export default function OrderStatusSummary({
 
       <div className="space-y-4">
         {statuses.map(({ status, count }) => (
-          <div key={status} className="flex items-center justify-between">
+          <div key={status} className="flex items-center justify-between pb-4 border-b  border-gray-100">
             <OrderStatus status={status} />
-            <span className="font-bold">{count}</span>
+            <span className="font-bold">{formatNumber(count)}</span>
           </div>
         ))}
       </div>

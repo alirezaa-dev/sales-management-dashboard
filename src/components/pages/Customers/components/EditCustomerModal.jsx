@@ -1,5 +1,6 @@
 import React from "react";
 import Button from "../../../ui/Button";
+import { formatNumber, parseNumber } from "../../../../utils/formatNumber";
 
 export default function EditCustomerModal({
   isOpen,
@@ -30,10 +31,11 @@ export default function EditCustomerModal({
         />
 
         <input
+          type="text"
           className="border p-2 w-full mb-2"
           placeholder="موبایل"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
+          value={formatNumber(phone)}
+          onChange={(e) => setPhone(parseNumber(e.target.value))}
         />
 
         <Button onClick={onEdit}>ویرایش</Button>

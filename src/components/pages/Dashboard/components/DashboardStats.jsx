@@ -1,3 +1,6 @@
+import { formatNumber } from "../../../../utils/formatNumber";
+import { formatPrice } from "../../../../utils/formatPrice";
+
 export default function DashboardStats({
   ordersCount,
   customersCount,
@@ -7,19 +10,19 @@ export default function DashboardStats({
   const stats = [
     {
       title: "تعداد سفارشات",
-      value: ordersCount,
+      value: formatNumber(ordersCount),
     },
     {
       title: "تعداد مشتریان",
-      value: customersCount,
+      value: formatNumber(customersCount),
     },
     {
       title: "تعداد محصولات",
-      value: productsCount,
+      value: formatNumber(productsCount),
     },
     {
       title: "فروش کل",
-      value: `${totalSales.toLocaleString()} تومان`,
+      value: `${formatPrice(totalSales)} تومان`,
     },
   ];
 

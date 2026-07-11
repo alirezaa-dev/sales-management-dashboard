@@ -18,16 +18,12 @@ import useOrderDraft from "./hooks/useOrderDraft";
 import OrdersSearch from "./components/OrdersSearch";
 
 export default function Orders() {
-  // =========================
   // Context
-  // =========================
   const { orders, setOrders } = useContext(OrderContext);
   const { customers } = useContext(CustomerContext);
   const { products } = useContext(ProductContext);
 
-  // =========================
   // UI State
-  // =========================
   const [isOpenModalAddOrder, setIsOpenModalAddOrder] = useState(false);
   const [isOpenModalEditOrder, setIsOpenModalEditOrder] = useState(false);
   const [search, setSearch] = useState("");
@@ -36,9 +32,7 @@ export default function Orders() {
   const [nextOrderNumber, setNextOrderNumber] = useState(4002);
   const [selectedOrderId, setSelectedOrderId] = useState(null);
 
-  // =========================
   // Order Draft (FROM HOOK)
-  // =========================
   const {
     orderDraft,
     updateDraft,
@@ -51,9 +45,7 @@ export default function Orders() {
     updateQuantity,
   } = useOrderDraft();
 
-  // =========================
   // Derived Data
-  // =========================
   const orderAmount = orderDraft.selectedProducts.reduce(
     (sum, product) => sum + product.price * product.quantity,
     0,
@@ -71,16 +63,12 @@ export default function Orders() {
     order.orderNumber.includes(search),
   );
 
-  // =========================
   // Helpers
-  // =========================
   const resetForm = () => {
     resetDraft();
   };
 
-  // =========================
   // Order Handlers
-  // =========================
   const handleAddOrder = () => {
     if (!orderDraft.customerId) {
       alert("لطفاً یک مشتری انتخاب کنید.");
@@ -169,9 +157,7 @@ export default function Orders() {
     );
   };
 
-  // =========================
   // View
-  // =========================
   return (
     <>
       {/* Header */}

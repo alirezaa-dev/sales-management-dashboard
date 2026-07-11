@@ -1,5 +1,6 @@
 import { MdDeleteOutline, MdOutlineModeEdit } from "react-icons/md";
 import ActiveStatus from "../../../ui/ActiveStatus";
+import { formatNumber } from "../../../../utils/formatNumber";
 
 export default function CategoriesTable({
   categories,
@@ -38,7 +39,7 @@ export default function CategoriesTable({
           {categories.map((category) => (
             <tr key={category.id}>
               <td className="px-4 py-3 border-b border-gray-100 text-sm whitespace-nowrap">
-                {category.rowNumber}
+                {formatNumber(category.rowNumber)}
               </td>
 
               <td className="px-4 py-3 border-b border-gray-100 text-sm whitespace-nowrap">
@@ -50,7 +51,7 @@ export default function CategoriesTable({
               </td>
 
               <td className="px-4 py-3 border-b border-gray-100 text-sm whitespace-nowrap">
-                {countProducts(category.id)}
+                {formatNumber(countProducts(category.id))}
               </td>
 
               <td className="px-4 py-3 border-b border-gray-100 text-sm whitespace-nowrap">

@@ -1,10 +1,10 @@
 import Button from "../../../../ui/Button";
+import { formatPrice } from "../../../../../utils/formatPrice";
 
 export default function OrderAddSummary({
   orderAmount,
   onClose,
   handleAddOrder,
-  
 }) {
   return (
     <>
@@ -12,7 +12,9 @@ export default function OrderAddSummary({
         <p className="font-medium">مبلغ کل</p>
 
         <div className="text-lg font-bold text-green-600">
-          {orderAmount.toLocaleString()} تومان
+          <div className="text-lg font-bold text-green-600">
+            {formatPrice(orderAmount)} تومان
+          </div>
         </div>
       </div>
 

@@ -1,4 +1,5 @@
 import Button from "../../../../ui/Button";
+import { formatPrice } from "../../../../../utils/formatPrice";
 
 export default function OrderEditSummary({
   orderAmount,
@@ -11,7 +12,7 @@ export default function OrderEditSummary({
         <p className="font-medium">مبلغ کل</p>
 
         <div className="text-lg font-bold text-green-600">
-          {orderAmount.toLocaleString()} تومان
+          {formatPrice(orderAmount)} تومان
         </div>
       </div>
 

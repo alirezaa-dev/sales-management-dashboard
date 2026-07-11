@@ -1,3 +1,4 @@
+import { formatPrice } from "../../../../utils/formatPrice";
 import OrderStatus from "../../../ui/OrderStatus";
 
 export default function LatestOrders({ orders, customers }) {
@@ -21,7 +22,7 @@ export default function LatestOrders({ orders, customers }) {
               </p>
 
               <p className="justify-self-center text-sm text-gray-500">
-                {order.orderAmount.toLocaleString()} تومان
+                {formatPrice(order.orderAmount)} تومان
               </p>
 
               <div className="justify-self-end">
