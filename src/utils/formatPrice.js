@@ -4,7 +4,7 @@ export function formatPrice(price) {
   return Number(price).toLocaleString("fa-IR");
 }
 
-export function toEnglishNumber(value) {
+export function toEnglishNumber(value = "") {
   return value
     .replace(/[۰-۹]/g, (d) => "۰۱۲۳۴۵۶۷۸۹".indexOf(d))
     .replace(/,/g, "")

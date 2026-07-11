@@ -6,7 +6,7 @@ export default function CustomersTable({ customers, onEdit, onDelete }) {
   return (
     <div className="w-full overflow-x-auto rounded-md bg-white">
       <table className="min-w-[900px] text-right border-collapse w-full">
-        <thead className="bg-gray-200 sticky top-0 z-10">
+        <thead className="bg-gray-200 sticky top-0">
           <tr>
             <th className="px-4 py-4 border-b border-gray-100 text-sm whitespace-nowrap min-w-[70px]">
               ردیف

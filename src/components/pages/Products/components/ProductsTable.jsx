@@ -1,24 +1,20 @@
-import { MdOutlineModeEdit } from "react-icons/md";
-import { IoEyeOutline } from "react-icons/io5";
-import { MdCheckCircleOutline } from "react-icons/md";
-import OrderStatus from "../../../ui/OrderStatus";
-import DeliveryMethod from "../../../ui/DeliveryMethod";
-import { DELIVERY_METHOD } from "../../../../constants/deliveryMethod";
-import { ORDER_STATUS } from "../../../../constants/orderStatus";
-import { formatDate } from "../../../../utils/formatDate";
-import { formatPrice } from "../../../../utils/formatPrice";
-import { formatNumber } from "../../../../utils/formatNumber";
+import { MdDeleteOutline, MdOutlineModeEdit } from "react-icons/md";
 
-export default function OrdersTable({
-  orders,
-  customers,
-  onView,
+import ActiveStatus from "../../../ui/ActiveStatus";
+import OutStock from "../../../ui/OutStock";
+import { formatNumber } from "../../../../utils/formatNumber";
+import { formatPrice } from "../../../../utils/formatPrice";
+
+export default function ProductsTable({
+  products,
+  categories,
+  brands,
   onEdit,
-  onConfirm,
+  onDelete,
 }) {
   return (
     <div className="w-full overflow-x-auto rounded-md bg-white">
-      <table className="min-w-[1200px] text-right border-collapse w-full">
+      <table className="w-full text-right border-collapse">
         <thead className="bg-gray-200 sticky top-0">
           <tr>
             <th className="px-4 py-4 border-b border-border text-sm whitespace-nowrap">
@@ -26,31 +22,31 @@ export default function OrdersTable({
             </th>
 
             <th className="px-4 py-4 border-b border-border text-sm whitespace-nowrap">
-              شماره سفارش
+              نام محصول
             </th>
 
             <th className="px-4 py-4 border-b border-border text-sm whitespace-nowrap">
-              نام مشتری
+              برند
             </th>
 
             <th className="px-4 py-4 border-b border-border text-sm whitespace-nowrap">
-              تعداد محصولات
+              شناسه
             </th>
 
             <th className="px-4 py-4 border-b border-border text-sm whitespace-nowrap">
-              مبلغ سفارش (تومان)
+              دسته‌بندی
             </th>
 
             <th className="px-4 py-4 border-b border-border text-sm whitespace-nowrap">
-              روش تحویل
+              قیمت (تومان)
             </th>
 
             <th className="px-4 py-4 border-b border-border text-sm whitespace-nowrap">
-              وضعیت سفارش
+              موجودی
             </th>
 
             <th className="px-4 py-4 border-b border-border text-sm whitespace-nowrap">
-              تاریخ سفارش
+              وضعیت
             </th>
 
             <th className="px-4 py-4 border-b border-border text-sm whitespace-nowrap">
@@ -60,71 +56,68 @@ export default function OrdersTable({
         </thead>
 
         <tbody>
-          {orders.map((order) => {
-            const customer = customers.find(
-              (customer) => customer.id === order.customerId,
+          {products.map((product) => {
+            const category = categories.find(
+              (cat) => cat.id === product.categoryId,
+            );
+
+            const brand = brands.find(
+              (brand) => brand.id === product.brandId,
             );
 
             return (
-              <tr key={order.id}>
+              <tr key={product.id}>
                 <td className="px-4 py-4 border-b border-border text-sm whitespace-nowrap">
-                  {formatNumber(order.id)}
+                  {formatNumber(product.id)}
                 </td>
 
                 <td className="px-4 py-4 border-b border-border text-sm whitespace-nowrap">
-                  {formatNumber(order.orderNumber)}
+                  {product.name}
                 </td>
 
                 <td className="px-4 py-4 border-b border-border text-sm whitespace-nowrap">
-                  {customer?.name}
+                  {brand?.title}
                 </td>
 
                 <td className="px-4 py-4 border-b border-border text-sm whitespace-nowrap">
-                  {formatNumber(order.items.length)}
+                  {formatNumber(product.sku)}
                 </td>
 
                 <td className="px-4 py-4 border-b border-border text-sm whitespace-nowrap">
-                  {formatPrice(order.orderAmount)}
+                  {category?.title}
                 </td>
 
                 <td className="px-4 py-4 border-b border-border text-sm whitespace-nowrap">
-                  <DeliveryMethod method={order.deliveryMethod} />
+                  {formatPrice(product.price)}
                 </td>
 
                 <td className="px-4 py-4 border-b border-border text-sm whitespace-nowrap">
-                  <OrderStatus status={order.orderStatus} />
+                  {product.stock > 0 ? (
+                    formatNumber(product.stock)
+                  ) : (
+                    <OutStock />
+                  )}
                 </td>
 
                 <td className="px-4 py-4 border-b border-border text-sm whitespace-nowrap">
-                  {formatDate(order.orderDate)}
+                  <ActiveStatus status={product.isActive} />
                 </td>
 
                 <td className="px-4 py-4 border-b border-border text-sm whitespace-nowrap">
                   <div className="flex items-center gap-2">
                     <button
-                      className="p-2 border rounded-md border-gray-200 bg-gray-100 shadow-sm cursor-pointer"
-                      onClick={() => onView(order)}
-                    >
-                      <IoEyeOutline />
-                    </button>
-
-                    <button
                       className="p-2 border rounded-md border-gray-200 bg-blue-100 shadow-sm cursor-pointer"
-                      onClick={() => {
-                        onEdit(order);
-                      }}
+                      onClick={() => onEdit(product)}
                     >
                       <MdOutlineModeEdit className="text-primary" />
                     </button>
-                    {order.deliveryMethod === DELIVERY_METHOD.SHIPPING &&
-                      order.orderStatus === ORDER_STATUS.PENDING_SHIPMENT && (
-                        <button
-                          className="p-2 border rounded-md border-gray-200 bg-green-100 shadow-sm cursor-pointer"
-                          onClick={() => onConfirm(order.id)}
-                        >
-                          <MdCheckCircleOutline className="text-green-600" />
-                        </button>
-                      )}
+
+                    <button
+                      className="p-2 border rounded-md border-gray-200 bg-red-100 shadow-sm cursor-pointer"
+                      onClick={() => onDelete(product.id)}
+                    >
+                      <MdDeleteOutline className="text-red-400" />
+                    </button>
                   </div>
                 </td>
               </tr>
