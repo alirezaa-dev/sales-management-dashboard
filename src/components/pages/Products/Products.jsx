@@ -170,7 +170,6 @@ export default function Products() {
         {/* Header */}
         <div className="flex items-center justify-between border-b border-gray-100 pb-4 mb-6">
           <div className="flex items-center gap-2">
-            <Filter size={18} className="text-gray-500" />
             <h3 className="font-semibold text-gray-800">فیلتر محصولات</h3>
           </div>
 
@@ -186,7 +185,6 @@ export default function Products() {
             }}
             className="flex items-center gap-2 text-sm text-gray-500 hover:text-red-500 transition-colors"
           >
-            <RotateCcw size={16} />
             پاک کردن فیلترها
           </button>
         </div>
